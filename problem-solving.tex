@@ -1,0 +1,89 @@
+\section{Problem Solving}
+\subsection{Problem: Array Division}
+\begin{frame}{Problem}
+    \pause
+    \begin{block}{Problem}
+        Given an array of integers \texttt{nums} and a positive integer $k$, find whether it is possible to divide \texttt{nums} into sets of  $k$ consecutive numbers.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Where to Start}
+    \pause
+    \begin{itemize}[<+->]
+        \item Look at examples
+              \begin{enumerate}[<+->]
+                  \item $\texttt{nums} = [1,2,3,3,4,4,5,6]$, $k = 4$
+                        \begin{itemize}[<+->]
+                            \item $[1, 2, 3, 4]$, $[3, 4, 5, 6]$
+                        \end{itemize}
+                  \item $\texttt{nums} = [3,2,1,2,3,4,3,4,5,9,10,11]$, $k = 3$
+                        \begin{itemize}[<+->]
+                            \item $[1, 2, 3]$, $[2, 3, 4]$, $[3, 4, 5]$, $[9, 10, 11]$
+                        \end{itemize}
+              \end{enumerate}
+        \item Hopefully notice a pattern -- if $x = \min(A)$
+              \begin{itemize}[<+->]
+                  \item then $x$, $x+1$, $\dots$, $x+k-1$ form one subarray
+              \end{itemize}
+        \item Naturally lends itself to a recursive solution:
+              \begin{itemize}[<+->]
+                  \item remove $x$, $x+1$, $\dots$, $x+k-1$, then repeat
+                  \item if run out of elements before removing all $k$, then no solution
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Writing a Solution}
+    \pause
+    \begin{itemize}[<+->]
+        \item two observations
+              \begin{enumerate}[<+->]
+                  \item we are removing the $k$ smallest elements
+                  \item if we know some element $x$, we know the next element is $x + 1$
+              \end{enumerate}
+        \item \begin{enumerate}\item suggests the use of a heap\end{enumerate}
+        \item \begin{enumerate}\setcounter{enumi}{1}\item suggests the use of a dictionary\end{enumerate}
+        \item both solutions are valid
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Heap Solution}
+    \pause
+    \begin{itemize}[<+->]
+        \item Heap Pop removes the smallest element
+        \item Need to account for removing the $k$ smallest \alert{distinct} elements
+        \item Thus, set up \mintinline{python}|(value, count)| pairs
+        \item Then, pop heap --- say smallest value is $(x, c)$
+              \begin{itemize}[<+->]
+                  \item effectively removing $c$ copies of $x$
+                  \item then remove $c$ copies of $x + 1$, $\dots$, $x + k - 1$ if possible
+                  \item if not possible, return \PyFalse
+              \end{itemize}
+        \item After popping, need to return remaining elements to heap
+        \item Keep track of remaining elements in array
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Python Implementation}
+    \pause
+    \resizebox{0.95\textwidth}{!}{\inputpython{code/heap-soln.py}}
+\end{frame}
+
+\begin{frame}{Dictionary Solution}
+    \pause
+    \begin{itemize}[<+->]
+        \item Dictionary holds the count for each element
+        \item if \mintinline{python}|x| is min and \mintinline{python}|D[x] = count|
+              \begin{itemize}[<+->]
+                  \item must have \mintinline{python}|D[x + i] >= count| for $i\in\set{x, x + 1, \dots, x + k - 1}$
+                  \item else return \PyFalse
+              \end{itemize}
+        \item Decrease each count for $i\in\set{x, x + 1, \dots, x + k - 1}$ by \mintinline{python}|count|
+        \item Remove entry if it becomes 0
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Python Implementation}
+    \pause
+    \inputpython{code/dict-soln.py}
+\end{frame}

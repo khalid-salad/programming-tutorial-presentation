@@ -1,0 +1,267 @@
+\section{Introduction}
+\begin{frame}{Things to Consider}
+    Good code depends on
+    \pause
+    \begin{itemize}[<+->]
+        \item Correctness
+        \item Readability
+        \item Performance
+    \end{itemize}
+\end{frame}
+\subsection{Correctness}
+\begin{frame}{Correctness}
+    \pause
+    \begin{itemize}[<+->]
+        \item Code should be correct
+        \item If code is incorrect then doesn't matter
+              \begin{itemize}[<+->]
+                  \item how performant it is
+                  \item how readable it is
+              \end{itemize}
+    \end{itemize}
+    \pause
+    \inputpython[Boolean Satisfiability]{code/incorrect.py}
+    \pause
+    \begin{itemize}[<+->]
+        \item Above code is $\bigO{1}$ solution to an NP-Complete Problem
+        \item But obviously not a correct solution
+    \end{itemize}
+\end{frame}
+\begin{frame}{Testing}
+    \pause
+    \begin{itemize}[<+->]
+        \item You must test your code
+        \item Easiest way to catch bugs
+        \item Example
+    \end{itemize}
+    \pause
+    \inputpython[Primality Checker]{code/incorrect-is-prime.py}
+    \pause
+    \begin{itemize}[<+->]
+        \item What is wrong with above code?
+        \item Might not be obvious, but easy to see with testing
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \inputpython[Test \mintinline{python}|is_prime|]{code/is-prime-test.py}
+    \pause
+    \begin{minipage}{0.4\textwidth}
+        \begin{tabular}{lcc}
+            $i$ & \mintinline{python}|is_prime(i)| & Correct?   \\\toprule
+            2   & \PyTrue                          & \checkmark \\
+            3   & \PyTrue                          & \checkmark \\
+            4   & \PyTrue                          & \xmark     \\
+            5   & \PyTrue                          & \checkmark \\
+            6   & \PyTrue                          & \xmark     \\
+            7   & \PyTrue                          & \checkmark \\
+            8   & \PyTrue                          & \xmark     \\
+            9   & \PyTrue                          & \xmark     \\
+            10  & \PyFalse                         & \checkmark \\\bottomrule
+        \end{tabular}\end{minipage}
+    \pause
+    \begin{minipage}{0.55\textwidth}
+        \begin{itemize}[<+->]
+            \item Incorrect for composite values 4, 6, 8, and 9
+            \item For these values $\mintinline{python}|int(n ** 0.5)| = \floor{\sqrt{n}} = 2$
+            \item Off-by-one error -- add 1 to range: \mintinline{python}|int(n ** 0.5) + 1|
+        \end{itemize}\end{minipage}
+\end{frame}
+
+\subsection{Readability}
+\begin{frame}{Readability}
+    \pause
+    \begin{itemize}[<+->]
+        \item Usually the most important thing after correctness
+        \item Code will be read far more often than it is written
+        \item Maintenance of code is often the highest expense
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Syntax}
+    \begin{itemize}[<+->]
+        \item Follow a set of best-practices for your language. For example
+              \begin{itemize}[<+->]
+                  \item In Python, there is PEP 8
+                  \item In C, there is the Linux Kernel Style
+              \end{itemize}
+        \item The style chosen is less important than that you follow a consistent style
+    \end{itemize}
+    \pause
+    \begin{multicols}{2}
+        \inputpython[Ugly]{code/unreadable.py}
+        \pause
+        \inputpython[Readable]{code/readable.py}
+    \end{multicols}
+    \begin{itemize}[<+->]
+        \item Easiest way to be consistent is to use a formatter
+        \item Automatically formats your code according to some style guide
+              \begin{itemize}[<+->]
+                  \item Black, yapf, autopep8, etc., for Python
+                  \item clang-format for C/C++
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Structure}
+    \begin{itemize}[<+->]
+        \item Syntactic readability (style) is not enough
+        \item Code should be structured for readability
+        \item Consider following problem
+    \end{itemize}
+    \pause
+    \begin{block}{Problem}
+        Find the largest product of two 3-digit numbers that is a palindrome.
+    \end{block}
+    \pause
+    \begin{block}{Brute-Force Solution}
+        Iterate through all $10^6$ pairs of products and check if they are palindromic while keeping track of max.
+    \end{block}
+\end{frame}
+\begin{frame}{Example of Bad Structure}
+    \pause
+    \resizebox*{0.6\textwidth}{!}{\inputpython[Poorly Structured]{code/unstructured.py}}
+    \pause
+    \begin{minipage}{0.3\textwidth}
+        \vspace{-2.5in}\begin{itemize}[<+->]
+            \item code is hard to follow
+            \item unnecessarily complex --- \mintinline{python}|is_palindrome| is essentially a sentinel value
+            \item code is imperative, not declarative
+        \end{itemize}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Example of Better Structure}
+    \pause
+    \resizebox*{0.6\textwidth}{!}{\inputpython[Better Structured]{code/structured.py}}
+    \pause
+    \begin{minipage}{0.3\textwidth}
+        \vspace{-2in}\begin{itemize}[<+->]
+            \item code is much easier to follow
+            \item function \mintinline{python}|is_palindrome| clearly conveys intent
+            \item code is declarative
+        \end{itemize}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Example of Good Structure}
+    \pause
+    \resizebox*{0.6\textwidth}{!}{\inputpython[Well Structured]{code/good-structure.py}}
+    \pause
+    \begin{minipage}{0.3\textwidth}
+        \vspace{-2in}\begin{itemize}[<+->]
+            \item basically same code
+            \item clearly describes what the program is doing \alert{overall}
+        \end{itemize}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Comments}
+    \pause
+    \begin{itemize}[<+->]
+        \item Code should be commented
+        \item but not \alert{over commented}
+    \end{itemize}
+    \pause
+    \inputpython[Bad Comment]{code/bad-comment.py}
+    \pause
+    \begin{itemize}[<+->]
+        \item it is clear that \mintinline{python}|i += 1| increments \mintinline{python}|i|
+        \item comment is superfluous and \alert{distracting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Good Comments}
+    \pause
+    \begin{itemize}[<+->]
+        \item As a rule of thumb
+              \begin{itemize}[<+->]
+                  \item good \alert{code} describes \alert{what} and \alert{how}
+                  \item good \alert{comments} describe \alert{why}
+              \end{itemize}
+    \end{itemize}
+    \pause
+    \resizebox{0.6\textwidth}{!}{\inputpython[Good Comment]{code/good-comment.py}}
+    \pause
+    \begin{minipage}{0.35\textwidth}\vspace*{-1.75in}\begin{itemize}[<+->]
+            \item this comment explains \alert{why} the code is iterating from \mintinline{python}|1| to \mintinline{python}|int(n ** 0.5) + 1|
+            \item without this comment, reader would have to determine for themselves
+        \end{itemize}\end{minipage}
+\end{frame}
+
+\begin{frame}{Good Code}
+    \begin{itemize}[<+->]
+        \item If your code is well-written, it will improve readability
+        \item Not just in terms of structure, but things like variable and function names
+        \item Well-written code often makes many comments \alert{unnecessary}
+        \item Often expressed as
+              \begin{block}{}
+                  Good Code is its Own Best Documentation
+              \end{block}
+        \item Not an excuse to avoid comments
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Good Naming}
+    \resizebox{0.45\textwidth}{!}{\inputpython[Bad Names]{code/bad-name.py}}
+    \resizebox{0.45\textwidth}{!}{\inputpython[Good Names]{code/good-name.py}}
+    \begin{multicols}{2}
+        \begin{itemize}[<+->]
+            \item these names convey
+                  \begin{itemize}[<+->]
+                      \item basically nothing
+                  \end{itemize}
+        \end{itemize}
+        \vfill\null
+        \columnbreak
+        \begin{itemize}[<+->]
+            \item these names convey
+                  \begin{itemize}[<+->]
+                      \item function is quicksort
+                      \item input is an array
+                      \item \mintinline{python}|left| and \mintinline{python}|right| are partitions around \mintinline{python}|pivot = array[0]|
+                      \item \mintinline{python}|ele| iterates through values of array
+                  \end{itemize}
+        \end{itemize}
+    \end{multicols}
+\end{frame}
+
+\begin{frame}{Miscellaneous}
+    \pause
+    \begin{itemize}[<+->]
+        \item Impractical to create exhaustive list of best practices
+              \begin{itemize}[<+->]
+                  \item and some practices are debateable
+              \end{itemize}
+        \item Good idea to look at resources like
+              \begin{itemize}[<+->]
+                  \item The Little Book of Python Anti-Patterns
+                  \item The C++ Core Guidelines
+              \end{itemize}
+        \item And to use a \alert{linter} --- a static code analysis tool to flag bugs, style errors, etc, such as
+              \begin{itemize}[<+->]
+                  \item Python -- flake8
+                  \item C++ -- clang-tidy
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\subsection{Performance}
+\begin{frame}{Performance}
+    \pause
+    \begin{itemize}[<+->]
+        \item Highly case-by-case
+              \begin{itemize}[<+->]
+                  \item specific use case may allow for less performant code
+                        \begin{itemize}[<+->]\item e.g. some one-time scientific calculation\end{itemize}
+                  \item or may require more performant code
+                        \begin{itemize}[<+->]\item e.g. real-time financial analysis\end{itemize}
+              \end{itemize}
+        \item Usually comes down to correct choice of algorithm and data structure
+              \begin{itemize}[<+->]
+                  \item e.g., if checking existence of an element, an array gives $\bigO{n}$ but a hash table gives $\bigO{1}$
+                        \begin{itemize}[<+->]\item which might make the difference between $\bigO{n^2}$ and $\bigO{n}$ overall\end{itemize}
+              \end{itemize}
+        \item While it does depend on use case, it is still usually best to focus on readability over performance
+              \begin{itemize}[<+->]\item it's easier to make slow code fast than to make confusing code understandable\end{itemize}
+    \end{itemize}
+\end{frame}

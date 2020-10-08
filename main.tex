@@ -1,0 +1,31 @@
+\documentclass{beamer}
+\usetheme{Darmstadt}
+\usecolortheme{beetle}
+\usepackage{presentation}
+
+\title{Programming Tutorial}
+\author{Khalid Hourani}
+\date{October 9, 2020}
+\institute{University of Houston}
+\logo{\includegraphics[scale=0.1]{logos/UH_Red.eps}}
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents
+\end{frame}
+
+\include{introduction}
+\include{problem-solving}
+\end{document}
