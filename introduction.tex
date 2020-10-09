@@ -67,6 +67,23 @@
         \end{itemize}\end{minipage}
 \end{frame}
 
+\begin{frame}{Edge Cases}
+    \pause
+    \begin{itemize}[<+->]
+        \item Be sure to test for \alert{edge cases}
+              \begin{itemize}[<+->]
+                  \item boundary or degenerate cases, e.g.,
+                        \begin{itemize}[<+->]
+                            \item sorting an \alert{empty} list
+                            \item binary search returning \alert{first} or \alert{last} index
+                            \item checking if 0 or 1 is \alert{prime}
+                            \item traversing a graph with \alert{no edges}
+                        \end{itemize}
+              \end{itemize}
+        \item Depending on the context, you may also need to test for \alert{invalid inputs}.
+    \end{itemize}
+\end{frame}
+
 \subsection{Readability}
 \begin{frame}{Readability}
     \pause
@@ -92,6 +109,7 @@
         \pause
         \inputpython[Readable]{code/readable.py}
     \end{multicols}
+    \pause
     \begin{itemize}[<+->]
         \item Easiest way to be consistent is to use a formatter
         \item Automatically formats your code according to some style guide
@@ -106,6 +124,12 @@
     \begin{itemize}[<+->]
         \item Syntactic readability (style) is not enough
         \item Code should be structured for readability
+        \item \alert{Modular} and \alert{structured} code is easier to
+              \begin{itemize}[<+->]
+                  \item read
+                  \item write
+                  \item debug
+              \end{itemize}
         \item Consider following problem
     \end{itemize}
     \pause
@@ -202,24 +226,25 @@
 \end{frame}
 
 \begin{frame}{Good Naming}
-    \resizebox{0.45\textwidth}{!}{\inputpython[Bad Names]{code/bad-name.py}}
-    \resizebox{0.45\textwidth}{!}{\inputpython[Good Names]{code/good-name.py}}
+    \onslide<2-11>{\resizebox{0.45\textwidth}{!}{\inputpython[Bad Names]{code/bad-name.py}}}
+    \onslide<5-11>{\resizebox{0.45\textwidth}{!}{\inputpython[Good Names]{code/good-name.py}}}
+    \pause
     \begin{multicols}{2}
-        \begin{itemize}[<+->]
-            \item these names convey
+        \begin{itemize}
+            \item<3-4> these names convey
                   \begin{itemize}[<+->]
-                      \item basically nothing
+                      \item<4> basically nothing
                   \end{itemize}
         \end{itemize}
         \vfill\null
         \columnbreak
-        \begin{itemize}[<+->]
-            \item these names convey
-                  \begin{itemize}[<+->]
-                      \item function is quicksort
-                      \item input is an array
-                      \item \mintinline{python}|left| and \mintinline{python}|right| are partitions around \mintinline{python}|pivot = array[0]|
-                      \item \mintinline{python}|ele| iterates through values of array
+        \begin{itemize}
+            \item<6-10> these names convey
+                  \begin{itemize}
+                      \item<7-10> function is quicksort
+                      \item<8-10> input is an array
+                      \item<9-10> \mintinline{python}|left| and \mintinline{python}|right| are partitions around \mintinline{python}|pivot = array[0]|
+                      \item<10> \mintinline{python}|ele| iterates through values of array
                   \end{itemize}
         \end{itemize}
     \end{multicols}
